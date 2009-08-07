@@ -5,22 +5,18 @@
  *		callBack: "variable",
  *		cookieName: "assistiveTech",
  *		debug: "false",
- *		flashID: "assistiveTechSwf",
  *		flashVersion: "9",
  *		replacementDiv: "assistiveTech",
- *		writeAnalytics: function(enabledFlag) { this.sendAlert("Some Analytic data goes here"); }
+ *		writeAnalytics: function(enabledFlag) { alert("Some Analytic data goes here"); }
  *	});
  */
 /*globals SWFObject deconcept escape getCookie window*/
 ( function() {
+	var assistiveTech = window.assistiveTech = function(options) {
+		return new assistiveTechConstructor(options);
+	}
+
 	function assistiveTechConstructor(options) {
-		/**
-		 * Need to pass in Name/Value pairs and associate them with Prototype If
-		 * more than one argument is passed, nothing is set. May change later
-		 * once a policy for determining what to do with multiple objects is
-		 * determined named pairs should include:
-		 * cookieName,flashLocale,replacementDiv,debug,callBack
-		 */
 		if(options.length <= 1) {
 		 this.initialize(options[0]);
 		}
@@ -28,11 +24,8 @@
 		return this;
 	}
 
-	function assistiveTech() {
-		return new assistiveTechConstructor(arguments);
-	}
-
 	assistiveTechConstructor.prototype = {
+		version: "1.0",
 		// default options
 		// swfobject could be pulled in better :-/
 		// using test options to verify they're overwriting
@@ -41,7 +34,6 @@
 			cookieName: "assistiveTech",			// string cookie name
 			debug: "false",							// boolean debug
 			divID: "some-div",						// string
-			flashID: null,							// ID to be passed to SWFObject
 			flashLocale: "flash/test.swf", 			// string flash to be embedded
 			flashVersion: "9",						// int as string flash version req.
 			success: null,							// null
@@ -61,56 +53,26 @@
 					this.options[key] = options[key];
 				}
 			}
-
+			
 			if (!this.cookieExists()) {
 				this.generateFlash();
 			}
 		},
 
-		//SWFObject 1.5
-		generateFlash: function() {
-			this.so = new SWFObject(this.options.flashLocale,
-					this.options.flashID, 1, 1, this.options.flashVersion);
-			if (this.so) {
-				this.so.addParam("quality", "low");
-				this.so.addParam("allowScriptAccess", "all");
-
-				// Pass the success handler's name to the Flash application.
-				// Flash will call this handler using ExternalInterface.
-				this.so.addVariable("callback", this.options.callBack + ".flashSuccess");
-
-				// Try and write out the SWFObject
-				this.success = this.so.write(this.options.divID);
-
-				// If there's a problem in writing the tag, try to give the user more
-				// information (probably got the wrong version of the player)
-				if (this.success) {
-					this.flashGenerateSuccess();
-				}
-				else {
-					// Call the failure callback
-					this.flashFailure();
-				}
-			}
-		},
 		//SWFObject 2.2 (due to need for callback function)
-		generateFlash22: function() {
+		generateFlash: function() {
 			this.flashVars = {callback:this.options.callBack + ".flashSuccess"};
 			this.flashParams = {quality:"low",allowScriptAccess:"all"};
-			this.embedCallback = function(e) {
-				// If there's a problem in writing the tag, try to give the user more
-				// information (probably got the wrong version of the player)
-				if (e.success) {
-					this.flashGenerateSuccess();
-				}
-				else {
-					// Call the failure callback
-					this.flashFailure();
-				}
-			};
 
 			// Try and write out the SWFObject
-			this.success = swfobject.embedSWF(this.options.flashLocale, this.options.divID, 1, 1, this.options.flashVersion,false,this.flashVars,this.flashParams,false,this.embedCallback);
+			swfobject.embedSWF(this.options.flashLocale, this.options.divID, 1, 1, this.options.flashVersion,false,this.flashVars,this.flashParams,false,null);
+			if (document.getElementById(this.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
+				//this.flashGenerateSuccess();
+				document.getElementById(this.options.divID).focus();
+			}
+			else {
+				this.flashFailure();
+			}
 		},
 
 		/**
@@ -119,7 +81,7 @@
 		 * get an update on isActive.
 		 */
 		flashGenerateSuccess: function() {
-			document.getElementById("assistiveTechSwf").focus();
+			document.getElementById(this.options.divID).focus();
 			if (this.options.debug) {
 				// Need to figure out what we want to do if debug is
 				// turned on and the flash piece succeeds
@@ -165,7 +127,7 @@
 		cookieExists: function() {
 			var cookieInformation = this.getCookie(),
 			existsFlag = false;
-			if (this.options.debug) {
+			if (this.options.debug === "true") {
 				existsFlag = false;
 			} else if (cookieInformation && cookieInformation.length > 1) {
 				existsFlag = true;
@@ -208,8 +170,8 @@
 		 * if we've been asked to do so.
 		 */
 		flashFailure: function() {
-			if (this.options.debug) {
-				this.version = deconcept.SWFObjectUtil.getPlayerVersion();
+			if (this.options.debug === "true") {
+				this.version = swfobject.getFlashPlayerVersion();
 				if (this.version && (document.getElementById && (this.version.major > 0))) {
 					document.getElementById(this.options.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
 						this.options.flashVersion + ". You have Flash player " +
@@ -219,20 +181,6 @@
 				}
 			}
 
-			if (this.options.debug === true) {
-				this.sendAlert('Something went wrong in Flash, please review.');
-			}
-		},
-		
-		sendAlert: function(text) {
-			if (window.console && window.console.log) {
-				window.console.log(text);
-			}
-			else {
-				alert(text);
-			}
 		}
 	};
-
-	window.assistiveTech = assistiveTech;
 })();
