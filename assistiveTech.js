@@ -1,4 +1,12 @@
-/**
+/*!
+ * Accessibility Sniffer
+ * Version: 0.1
+ *
+ * Copyright 2011, George Walters II
+ * Licensed under MIT Version 2
+ *
+ * Date: Fri Aug 19 2011 8:58 AM -0500
+ *
  * Usage:
  *	assistiveTech.init({
  *		flashLocale: "flash/assistiveTech.swf",
