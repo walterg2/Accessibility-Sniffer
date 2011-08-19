@@ -95,7 +95,7 @@ var assistiveTech = (function () {
 	
 	generateFlash = function () {
 		var that = this;
-		that.flashVars = {callback:self.defaults.callBack + ".flashSuccess"};
+		that.flashVars = {callback:"assistiveTech.flashSuccess"};
 		that.flashParams = {quality:"low",allowScriptAccess:"all"};
 		
 		// Write out the SWFObject
