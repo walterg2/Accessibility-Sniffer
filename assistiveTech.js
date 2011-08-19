@@ -68,9 +68,8 @@ var assistiveTech = (function () {
 		self.defaults.techAssist = (self.defaults.debug) ? true
 				: accessibilityFlag);
 		self.setCookie();
-		var ATEnabled = self.defaults.techAssist ? 'Yes' : 'No';
 		if (self.typeOf(self.defaults.writeAnalytics) === "function") {
-			self.defaults.writeAnalytics(ATEnabled);
+			self.defaults.writeAnalytics((self.defaults.techAssist ? 'Yes' : 'No'));
 		}
 	},
 	
@@ -100,13 +99,13 @@ var assistiveTech = (function () {
 		that.flashParams = {quality:"low",allowScriptAccess:"all"};
 		
 		// Write out the SWFObject
-		swfobject.embedSWF(self.defaults.flashLocale, self.defaults.divID, 1, 1, self.defaults.flashVersion, false, that.flashVars, that.flashParams, false, self.checkFlashInclusion());
+		swfobject.embedSWF(self.defaults.flashLocale, self.defaults.divID, 1, 1, self.defaults.flashVersion, false, that.flashVars, that.flashParams, false, assistiveTech.checkFlashInclusion);
 	},
 	
-	checkFlashInclusion = function () {
+	checkFlashInclusion = function (flag) {
 		if (document.getElementById(self.defaults.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
 			document.getElementById(self.defaults.divID).focus();
-			self.flashSuccess();
+			self.flashSuccess(flag);
 		}
 		else {
 			self.flashFailure();
