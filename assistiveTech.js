@@ -1,6 +1,6 @@
 /**
  * Usage:
- *	var variable = assistiveTech({
+ *	assistiveTech.init({
  *		flashLocale: "flash/assistiveTech.swf",
  *		callBack: "variable",
  *		cookieName: "assistiveTech",
