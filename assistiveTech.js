@@ -15,7 +15,7 @@
  *		debug: "false",
  *		flashVersion: "9",
  *		replacementDiv: "assistiveTech",
- *		writeAnalytics = function (enabledFlag) { alert("Some Analytic data goes here"); }
+ *		writeAnalytics: function (enabledFlag) { alert("Some Analytic data goes here"); }
  *	});
  */
 var assistiveTech = (function () {
@@ -61,6 +61,16 @@ var assistiveTech = (function () {
 			self.loadSwfObject();
 		} else if (!self.cookieExists()) {
 			self.generateFlash();
+		}
+	},
+	
+	flashSuccess = function (accessibilityFlag) {
+		self.defaults.techAssist = (self.defaults.debug) ? true
+				: accessibilityFlag);
+		self.setCookie();
+		var ATEnabled = self.defaults.techAssist ? 'Yes' : 'No';
+		if (self.typeOf(self.defaults.writeAnalytics) === "function") {
+			self.defaults.writeAnalytics(ATEnabled);
 		}
 	},
 	
@@ -179,6 +189,7 @@ var assistiveTech = (function () {
 
 	return {
 		init: init,
+		flashSuccess: flashSuccess,
 		getCookieName: getCookieName,
 		getCookieValue: getCookieValue,
 		getVersion: getVersion;
