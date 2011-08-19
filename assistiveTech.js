@@ -175,7 +175,7 @@ var assistiveTech = (function () {
 	},
 
 	setCookie = function () {
-		var nextMonth = expiresDate = new Date();
+		var nextMonth = new Date(), expiresDate;
 		nextMonth.setSeconds(0);
 		nextMonth.setMinutes(0);
 		nextMonth.setHours(0);
