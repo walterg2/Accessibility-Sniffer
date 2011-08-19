@@ -205,12 +205,12 @@ var assistiveTech = (function () {
 		return version;
 	},
 
-	setCallback = function (cB) {
-		self.callBack = cB;
-	},
-	
 	getCookieName = function () {
 		return cookieName;
+	},
+	
+	setCallback = function (cB) {
+		self.callBack = cB;
 	},
 	
 	setWriteAnalytics = function (anonymousFunction) {
@@ -304,8 +304,8 @@ var assistiveTech = (function () {
 		return s;
 	},
 	
-	setDebug = function(debug) {
-		debug = this.debug;
+	setDebug = function(value) {
+		self.debug = value;
 	};
 	
 	return {
