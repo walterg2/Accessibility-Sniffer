@@ -38,19 +38,7 @@ var assistiveTech = (function () {
 		var cookieInformation = self.getCookie();
 		return cookieInformation[1];
 	},
-
-	setCallback = function (cB) {
-		self.callBack = cB;
-	},
 	
-	setWriteAnalytics = function (anonymousFunction) {
-		self.writeAnalytics = anonymousFunction;
-	},
-	
-	setDebug = function (value) {
-		self.debug = value;
-	},
-
 	init = function (options) {
 		if (self.typeOf(options) === 'object') {
 			for (var key in (options || {})) {
@@ -185,10 +173,7 @@ var assistiveTech = (function () {
 		init: init,
 		getCookieName: getCookieName,
 		getCookieValue: getCookieValue,
-		getVersion: getVersion,
-		setCallBack: setCallBack,
-		setWriteAnalytics: setWriteAnalytics,
-		setDebug: setDebug;
+		getVersion: getVersion;
 	}
 	
 }());
