@@ -293,16 +293,12 @@ var assistiveTech = (function () {
 	},
 	
 	typeOf = function(value) {
-		var s = typeof value;
-		if (s === 'object') {
-			if (value) {
-				if (typeof value.length === 'number' &&
-						!(value.propertyIsEnumerable('length')) &&
-						typeof value.splice === 'function') {
-					s = 'array';
-				}
-			} else {
-				s = 'null';
+		var s = 'null';
+		if (value) {
+			if (typeof value === 'object' && typeof value.length === 'number' &&
+				!(value.propertyIsEnumerable('length')) &&
+				typeof value.splice === 'function') {
+				s = 'array';
 			}
 		}
 		return s;
