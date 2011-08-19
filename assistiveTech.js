@@ -184,3 +184,129 @@
 		}
 	};
 })();
+
+var assistiveTech = (function () {
+	var options = {
+		version = 0.1,
+		callBack,
+		cookieName = "assistiveTech",
+		debug = false,
+		divId,
+		flashLocale = "/flash/assistiveTech.swf",
+		flashVersion = "9",
+		success,
+		techAssist = false,
+		writeAnalytics
+	},
+
+//Public Methods
+	getVersion = function() {
+		return version;
+	},
+
+	setCallback = function(callBack) {
+		callBack = this.callBack;
+	},
+	
+	getCookieName = function() {
+		return cookieName;
+	},
+	
+	init = function(options) {
+		if (this.typeOf(options) === 'object') {
+			for (var key in (options || {})) {
+				this.options[key] = options[key];
+			}
+		}
+		
+		// Test to see if SWFObject is loaded and if not, load it dynamically from Google APIs
+		//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js
+		
+		if (!this.cookieExists() && !(typeof swfobject.embedSWF === "function") {
+			this.loadSwfObject();
+		} else if (!this.cookieExists()) {
+			this.generateFlash();
+		}
+	},
+	
+// Private Methods
+//SWFObject 2.2 (due to need for callback function)
+	loadSwfObject = function() {
+		var body = document.getElementsByTagName("body")[0],
+			script = document.createElement("script");
+		
+		script.type = "text/javascript";
+		script.src = "//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js";
+		script.onload = this.generateFlash;
+		script.onreadystatechange = function () {
+			if (this.readyState === "complete") {
+				this.generateFlash();
+			}
+		};
+		
+		body.appendChild(script);
+	},
+	
+	generateFlash = function() {
+		this.flashVars = {callback:this.options.callBack + ".flashSuccess"};
+		this.flashParams = {quality:"low",allowScriptAccess:"all"};
+		
+		// Write out the SWFObject
+		swfobject.embedSWF(this.options.flashLocale, this.options.divID, 1, 1, this.options.flashVersion, false, this.flashVars, this.flashParams, false, this.checkFlashInclusion());
+	},
+	
+	checkFlashInclusion = function() {
+		if (document.getElementById(this.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
+			document.getElementById(this.options.divID).focus();
+		}
+		else {
+			this.flashFailure();
+		}
+	},
+	
+	/**
+	 * Embedding the Flash application failed.
+	 * Display the version message in the assistiveTech div only
+	 * if we've been asked to do so.
+	 */
+	flashFailure = function() {
+		if (this.options.debug === "true") {
+			this.version = swfobject.getFlashPlayerVersion();
+			if (this.version && (document.getElementById && (this.version.major > 0))) {
+				document.getElementById(this.options.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
+					this.options.flashVersion + ". You have Flash player " +
+					this.version.major + "." + this.version.minor + "." + this.version.rev +
+					" installed. <a href='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" +
+					" Download the latest Flash Player</a> to run the sample.</p>";
+			}
+		}
+	},
+	
+	typeOf = function(value) {
+		var s = typeof value;
+		if (s === 'object') {
+			if (value) {
+				if (typeof value.length === 'number' &&
+						!(value.propertyIsEnumerable('length')) &&
+						typeof value.splice === 'function') {
+					s = 'array';
+				}
+			} else {
+				s = 'null';
+			}
+		}
+		return s;
+	},
+	
+	setDebug = function(debug) {
+		debug = this.debug;
+	};
+	
+	return {
+		init: init,
+		getVersion: getVersion,
+		getCookieName: getCookieName,
+		setCallBack: setCallBack;
+	}
+	
+})();
