@@ -44,13 +44,13 @@
 // 
 // 		// Initialization code
 // 		initialize: function(options) {
-// 			this.so = this.options.so;
-// 			this.success = this.options.success;
-// 			this.version = this.options.version;
+// 			this.so = self.options.so;
+// 			this.success = self.options.success;
+// 			this.version = self.options.version;
 // 
 // 			if (this.typeOf(options) === 'object') {
 // 				for (var key in (options || {})) {
-// 					this.options[key] = options[key];
+// 					self.options[key] = options[key];
 // 				}
 // 			}
 // 			
@@ -61,14 +61,14 @@
 // 
 // 		//SWFObject 2.2 (due to need for callback function)
 // 		generateFlash: function() {
-// 			this.flashVars = {callback:this.options.callBack + ".flashSuccess"};
+// 			this.flashVars = {callback:self.options.callBack + ".flashSuccess"};
 // 			this.flashParams = {quality:"low",allowScriptAccess:"all"};
 // 
 // 			// Try and write out the SWFObject
-// 			swfobject.embedSWF(this.options.flashLocale, this.options.divID, 1, 1, this.options.flashVersion,false,this.flashVars,this.flashParams,false,null);
-// 			if (document.getElementById(this.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
+// 			swfobject.embedSWF(self.options.flashLocale, self.options.divID, 1, 1, self.options.flashVersion,false,this.flashVars,this.flashParams,false,null);
+// 			if (document.getElementById(self.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
 // 				//this.flashGenerateSuccess();
-// 				document.getElementById(this.options.divID).focus();
+// 				document.getElementById(self.options.divID).focus();
 // 			}
 // 			else {
 // 				this.flashFailure();
@@ -81,8 +81,8 @@
 // 		 * get an update on isActive.
 // 		 */
 // 		flashGenerateSuccess: function() {
-// 			document.getElementById(this.options.divID).focus();
-// 			if (this.options.debug) {
+// 			document.getElementById(self.options.divID).focus();
+// 			if (self.options.debug) {
 // 				// Need to figure out what we want to do if debug is
 // 				// turned on and the flash piece succeeds
 // 			}
@@ -113,7 +113,7 @@
 // 				cookieData = cookieName = null;
 // 				cookieData = cookies[i].split('=');
 // 				cookieName = cookieData[0].replace(/^\s+|\s+$/g, '');
-// 				if (cookieName === this.options.cookieName) {
+// 				if (cookieName === self.options.cookieName) {
 // 					return cookieData;
 // 				}
 // 			}
@@ -127,7 +127,7 @@
 // 		cookieExists: function() {
 // 			var cookieInformation = this.getCookie(),
 // 			existsFlag = false;
-// 			if (this.options.debug === "true") {
+// 			if (self.options.debug === "true") {
 // 				existsFlag = false;
 // 			} else if (cookieInformation && cookieInformation.length > 1) {
 // 				existsFlag = true;
@@ -143,8 +143,8 @@
 // 			nextMonth.setMonth(nextMonth.getMonth() + 1);
 // 			nextMonth.setDate(1);
 // 			expiresDate = new Date(nextMonth);
-// 			document.cookie = this.options.cookieName + "=" +
-// 					escape(this.options.techAssist) + "; expires=" +
+// 			document.cookie = self.options.cookieName + "=" +
+// 					escape(self.options.techAssist) + "; expires=" +
 // 					expiresDate.toGMTString() + "; path=/";
 // 		},
 // 
@@ -154,13 +154,13 @@
 // 		},
 // 
 // 		flashSuccess: function(accessibilityFlag) {
-// 			this.options.techAssist = (this.options.debug && this.options.debugFlag === "on") ? true
-// 					: ((this.options.debug && this.options.debugFlag === "off") ? false
+// 			self.options.techAssist = (self.options.debug && self.options.debugFlag === "on") ? true
+// 					: ((self.options.debug && self.options.debugFlag === "off") ? false
 // 							: accessibilityFlag);
 // 			this.setCookie();
-// 			var ATEnabled = this.options.techAssist ? 'Yes' : 'No';
-// 			if (this.typeOf(this.options.writeAnalytics) === "function") {
-// 				this.options.writeAnalytics(ATEnabled);
+// 			var ATEnabled = self.options.techAssist ? 'Yes' : 'No';
+// 			if (this.typeOf(self.options.writeAnalytics) === "function") {
+// 				self.options.writeAnalytics(ATEnabled);
 // 			}
 // 		},
 // 
@@ -170,11 +170,11 @@
 // 		 * if we've been asked to do so.
 // 		 */
 // 		flashFailure: function() {
-// 			if (this.options.debug === "true") {
+// 			if (self.options.debug === "true") {
 // 				this.version = swfobject.getFlashPlayerVersion();
 // 				if (this.version && (document.getElementById && (this.version.major > 0))) {
-// 					document.getElementById(this.options.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
-// 						this.options.flashVersion + ". You have Flash player " +
+// 					document.getElementById(self.options.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
+// 						self.options.flashVersion + ". You have Flash player " +
 // 						this.version.major + "." + this.version.minor + "." + this.version.rev +
 // 						" installed. <a href='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" +
 // 						" Download the latest Flash Player</a> to run the sample.</p>";
@@ -198,34 +198,39 @@ var assistiveTech = (function () {
 		techAssist = false,
 		writeAnalytics
 	},
+		self = this,
 
 //Public Methods
-	getVersion = function() {
+	getVersion = function () {
 		return version;
 	},
 
-	setCallback = function(callBack) {
-		callBack = this.callBack;
+	setCallback = function (cB) {
+		self.callBack = cB;
 	},
 	
-	getCookieName = function() {
+	getCookieName = function () {
 		return cookieName;
 	},
 	
+	setWriteAnalytics = function (anonymousFunction) {
+		self.writeAnalytics = anonymousFunction;
+	},
+	
 	init = function(options) {
-		if (this.typeOf(options) === 'object') {
+		if (self.typeOf(options) === 'object') {
 			for (var key in (options || {})) {
-				this.options[key] = options[key];
+				self.options[key] = options[key];
 			}
 		}
 		
 		// Test to see if SWFObject is loaded and if not, load it dynamically from Google APIs
 		//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js
 		
-		if (!this.cookieExists() && !(typeof swfobject.embedSWF === "function") {
-			this.loadSwfObject();
-		} else if (!this.cookieExists()) {
-			this.generateFlash();
+		if (!self.cookieExists() && !(typeof swfobject.embedSWF === "function") {
+			self.loadSwfObject();
+		} else if (!self.cookieExists()) {
+			self.generateFlash();
 		}
 	},
 	
@@ -243,7 +248,7 @@ var assistiveTech = (function () {
 		// IE
 		script.onreadystatechange = function () {
 			if (this.readyState === "complete") {
-				that.generateFlash();
+				self.generateFlash();
 			}
 		};
 		
@@ -251,16 +256,17 @@ var assistiveTech = (function () {
 	},
 	
 	generateFlash = function() {
-		this.flashVars = {callback:this.options.callBack + ".flashSuccess"};
-		this.flashParams = {quality:"low",allowScriptAccess:"all"};
+		var that = this;
+		that.flashVars = {callback:self.options.callBack + ".flashSuccess"};
+		that.flashParams = {quality:"low",allowScriptAccess:"all"};
 		
 		// Write out the SWFObject
-		swfobject.embedSWF(this.options.flashLocale, this.options.divID, 1, 1, this.options.flashVersion, false, this.flashVars, this.flashParams, false, this.checkFlashInclusion());
+		swfobject.embedSWF(self.options.flashLocale, self.options.divID, 1, 1, self.options.flashVersion, false, that.flashVars, that.flashParams, false, self.checkFlashInclusion());
 	},
 	
 	checkFlashInclusion = function() {
-		if (document.getElementById(this.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
-			document.getElementById(this.options.divID).focus();
+		if (document.getElementById(self.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
+			document.getElementById(self.options.divID).focus();
 		}
 		else {
 			this.flashFailure();
@@ -273,12 +279,13 @@ var assistiveTech = (function () {
 	 * if we've been asked to do so.
 	 */
 	flashFailure = function() {
-		if (this.options.debug === "true") {
-			this.version = swfobject.getFlashPlayerVersion();
-			if (this.version && (document.getElementById && (this.version.major > 0))) {
-				document.getElementById(this.options.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
-					this.options.flashVersion + ". You have Flash player " +
-					this.version.major + "." + this.version.minor + "." + this.version.rev +
+		var that = this,
+			flashVersion = swfobject.getFlashPlayerVersion();
+		if (self.options.debug === "true") {
+			if (flashVersion && (document.getElementById && (flashVersion.major > 0))) {
+				document.getElementById(self.options.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
+					self.options.flashVersion + ". You have Flash player " +
+					flashVersion.major + "." + flashVersion.minor + "." + flashVersion.rev +
 					" installed. <a href='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" +
 					" Download the latest Flash Player</a> to run the sample.</p>";
 			}
