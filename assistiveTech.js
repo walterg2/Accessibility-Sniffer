@@ -11,7 +11,7 @@
  *	});
  */
 var assistiveTech = (function () {
-	var options = {
+	var defaults = {
 		version = 0.1,
 		callBack,
 		cookieName = "assistiveTech",
@@ -54,7 +54,7 @@ var assistiveTech = (function () {
 	init = function (options) {
 		if (self.typeOf(options) === 'object') {
 			for (var key in (options || {})) {
-				self.options[key] = options[key];
+				self.defaults[key] = options[key];
 			}
 		}
 		
@@ -90,16 +90,16 @@ var assistiveTech = (function () {
 	
 	generateFlash = function () {
 		var that = this;
-		that.flashVars = {callback:self.options.callBack + ".flashSuccess"};
+		that.flashVars = {callback:self.defaults.callBack + ".flashSuccess"};
 		that.flashParams = {quality:"low",allowScriptAccess:"all"};
 		
 		// Write out the SWFObject
-		swfobject.embedSWF(self.options.flashLocale, self.options.divID, 1, 1, self.options.flashVersion, false, that.flashVars, that.flashParams, false, self.checkFlashInclusion());
+		swfobject.embedSWF(self.defaults.flashLocale, self.defaults.divID, 1, 1, self.defaults.flashVersion, false, that.flashVars, that.flashParams, false, self.checkFlashInclusion());
 	},
 	
 	checkFlashInclusion = function () {
-		if (document.getElementById(self.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
-			document.getElementById(self.options.divID).focus();
+		if (document.getElementById(self.defaults.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
+			document.getElementById(self.defaults.divID).focus();
 		}
 		else {
 			this.flashFailure();
@@ -114,10 +114,10 @@ var assistiveTech = (function () {
 	flashFailure = function () {
 		var that = this,
 			flashVersion = swfobject.getFlashPlayerVersion();
-		if (self.options.debug === "true") {
+		if (self.defaults.debug === "true") {
 			if (flashVersion && (document.getElementById && (flashVersion.major > 0))) {
-				document.getElementById(self.options.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
-					self.options.flashVersion + ". You have Flash player " +
+				document.getElementById(self.defaults.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
+					self.defaults.flashVersion + ". You have Flash player " +
 					flashVersion.major + "." + flashVersion.minor + "." + flashVersion.rev +
 					" installed. <a href='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" +
 					" Download the latest Flash Player</a> to run the sample.</p>";
@@ -146,7 +146,7 @@ var assistiveTech = (function () {
 			cookieData = cookieName = null;
 			cookieData = cookies[i].split('=');
 			cookieName = cookieData[0].replace(/^\s+|\s+$/g, '');
-			if (cookieName === self.options.cookieName) {
+			if (cookieName === self.defaults.cookieName) {
 				return cookieData;
 			}
 		}
@@ -160,7 +160,7 @@ var assistiveTech = (function () {
 	cookieExists = function () {
 		var cookieInformation = self.getCookie(),
 			existsFlag = false;
-		if (self.options.debug === "true") {
+		if (self.defaults.debug === "true") {
 			existsFlag = false;
 		} else if (cookieInformation && cookieInformation.length > 1) {
 			existsFlag = true;
@@ -176,8 +176,8 @@ var assistiveTech = (function () {
 		nextMonth.setMonth(nextMonth.getMonth() + 1);
 		nextMonth.setDate(1);
 		expiresDate = new Date(nextMonth);
-		document.cookie = self.options.cookieName + "=" +
-				escape(self.options.techAssist) + "; expires=" +
+		document.cookie = self.defaults.cookieName + "=" +
+				escape(self.defaults.techAssist) + "; expires=" +
 				expiresDate.toGMTString() + "; path=/";
 	};
 
