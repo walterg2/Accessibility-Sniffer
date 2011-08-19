@@ -19,6 +19,7 @@
  *	});
  */
 var assistiveTech = (function () {
+	"use strict";
 	var defaults = {
 		version = 0.1,
 		callBack,
@@ -99,7 +100,7 @@ var assistiveTech = (function () {
 		that.flashParams = {quality:"low",allowScriptAccess:"all"};
 		
 		// Write out the SWFObject
-		swfobject.embedSWF(self.defaults.flashLocale, self.defaults.divID, 1, 1, self.defaults.flashVersion, false, that.flashVars, that.flashParams, false, assistiveTech.checkFlashInclusion);
+		swfobject.embedSWF(self.defaults.flashLocale, self.defaults.divID, 1, 1, self.defaults.flashVersion, false, that.flashVars, that.flashParams, false, self.checkFlashInclusion);
 	},
 	
 	checkFlashInclusion = function (flag) {
