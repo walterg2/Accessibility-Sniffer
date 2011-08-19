@@ -18,7 +18,9 @@ assistiveTech.init({
 	success: function () { 
 		//some function here
 	},
-	writeAnalytics: function (enabledFlag) { alert("Some Analytic data goes here"); }
+	writeAnalytics: function (enabledFlag) {
+		alert("Some Analytic data goes here");
+	}
  
 });
 ```
