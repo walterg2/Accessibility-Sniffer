@@ -10,11 +10,12 @@
  * Usage:
  *	assistiveTech.init({
  *		flashLocale: "flash/assistiveTech.swf",
- *		callBack: "variable",
  *		cookieName: "assistiveTech",
  *		debug: "false",
+ *		divId: "assistiveTech",
  *		flashVersion: "9",
- *		replacementDiv: "assistiveTech",
+ *		flashLocale: "/media/assistiveTech.swf",
+ *		success: function () { //some function here },
  *		writeAnalytics: function (enabledFlag) { alert("Some Analytic data goes here"); }
  *	});
  */
