@@ -10,11 +10,12 @@
  * Usage:
  *	assistiveTech.init({
  *		flashLocale: "flash/assistiveTech.swf",
- *		callBack: "variable",
  *		cookieName: "assistiveTech",
  *		debug: "false",
+ *		divId: "assistiveTech",
  *		flashVersion: "9",
- *		replacementDiv: "assistiveTech",
+ *		flashLocale: "/media/assistiveTech.swf",
+ *		success: function () { //some function here },
  *		writeAnalytics: function (enabledFlag) { alert("Some Analytic data goes here"); }
  *	});
  */
@@ -48,8 +49,9 @@ var assistiveTech = (function () {
 		},
 	
 		init = function (options) {
+			var key;
 			if (self.typeOf(options) === 'object') {
-				for (var key in (options || {})) {
+				for (key in (options || {})) {
 					self.defaults[key] = options[key];
 				}
 			}
@@ -57,7 +59,7 @@ var assistiveTech = (function () {
 			// Test to see if SWFObject is loaded and if not, load it dynamically from Google APIs
 			//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js
 
-			if (!self.cookieExists() && !(typeof swfobject.embedSWF === "function") {
+			if (!self.cookieExists() && typeof swfobject.embedSWF !== "function") {
 				self.loadSwfObject();
 			} else if (!self.cookieExists()) {
 				self.generateFlash();
@@ -65,7 +67,7 @@ var assistiveTech = (function () {
 		},
 	
 		flashSuccess = function (accessibilityFlag) {
-			self.defaults.techAssist = (self.defaults.debug) ? true : accessibilityFlag);
+			self.defaults.techAssist = (self.defaults.debug) ? true : accessibilityFlag;
 			self.setCookie();
 			if (self.typeOf(self.defaults.writeAnalytics) === "function") {
 				self.defaults.writeAnalytics((self.defaults.techAssist ? 'Yes' : 'No'));
@@ -94,8 +96,8 @@ var assistiveTech = (function () {
 	
 		generateFlash = function () {
 			var that = this;
-			that.flashVars = {callback:"assistiveTech.flashSuccess"};
-			that.flashParams = {quality:"low",allowScriptAccess:"all"};
+			that.flashVars = {callback: "assistiveTech.flashSuccess"};
+			that.flashParams = {quality: "low", allowScriptAccess: "all"};
 
 			// Write out the SWFObject
 			swfobject.embedSWF(self.defaults.flashLocale, self.defaults.divID, 1, 1, self.defaults.flashVersion, false, that.flashVars, that.flashParams, false, self.checkFlashInclusion);
@@ -105,9 +107,8 @@ var assistiveTech = (function () {
 			if (document.getElementById(self.defaults.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
 				document.getElementById(self.defaults.divID).focus();
 				self.flashSuccess(flag);
-			}
-			else {
-			self.flashFailure();
+			} else {
+				self.flashFailure();
 			}
 		},
 
@@ -124,8 +125,8 @@ var assistiveTech = (function () {
 					document.getElementById(self.defaults.replacementDiv).innerHTML = "<p>This sample requires Flash Player version " +
 						self.defaults.flashVersion + ". You have Flash player " +
 						flashVersion.major + "." + flashVersion.minor + "." + flashVersion.rev +
-							" installed. <a href='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" +
-							" Download the latest Flash Player</a> to run the sample.</p>";
+						" installed. <a href='http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash'>" +
+						" Download the latest Flash Player</a> to run the sample.</p>";
 				}
 			}
 		},
@@ -134,9 +135,9 @@ var assistiveTech = (function () {
 			var s = 'null';
 			if (value) {
 				if (typeof value === 'object' && typeof value.length === 'number' &&
-					!(value.propertyIsEnumerable('length')) &&
-					typeof value.splice === 'function') {
-						s = 'array';
+						!(value.propertyIsEnumerable('length')) &&
+						typeof value.splice === 'function') {
+					s = 'array';
 				}
 			}
 			return s;
@@ -147,7 +148,7 @@ var assistiveTech = (function () {
 				i = 0,
 				cookieData,
 				cookieName;
-			for ( ; i < cookies.length; i = i + 1) {
+			for (i; i < cookies.length; i = i + 1) {
 				cookieData = cookieName = null;
 				cookieData = cookies[i].split('=');
 				cookieName = cookieData[0].replace(/^\s+|\s+$/g, '');
@@ -186,11 +187,11 @@ var assistiveTech = (function () {
 				expiresDate.toGMTString() + "; path=/";
 		};
 
-		return {
-			init: init,
-			flashSuccess: flashSuccess,
-			getCookieName: getCookieName,
-			getCookieValue: getCookieValue,
-			getVersion: getVersion;
-		};
+	return {
+		init: init,
+		flashSuccess: flashSuccess,
+		getCookieName: getCookieName,
+		getCookieValue: getCookieValue,
+		getVersion: getVersion
+	};
 }());
