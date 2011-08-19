@@ -106,9 +106,10 @@ var assistiveTech = (function () {
 	checkFlashInclusion = function () {
 		if (document.getElementById(self.defaults.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
 			document.getElementById(self.defaults.divID).focus();
+			self.flashSuccess();
 		}
 		else {
-			this.flashFailure();
+			self.flashFailure();
 		}
 	},
 	
