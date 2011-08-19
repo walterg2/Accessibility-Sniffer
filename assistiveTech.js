@@ -7,12 +7,12 @@
  *		debug: "false",
  *		flashVersion: "9",
  *		replacementDiv: "assistiveTech",
- *		writeAnalytics: function(enabledFlag) { alert("Some Analytic data goes here"); }
+ *		writeAnalytics = function (enabledFlag) { alert("Some Analytic data goes here"); }
  *	});
  */
 /*globals SWFObject deconcept escape getCookie window*/
-// ( function() {
-// 	var assistiveTech = window.assistiveTech = function(options) {
+// ( function () {
+// 	var assistiveTech = window.assistiveTech = function (options) {
 // 		return new assistiveTechConstructor(options);
 // 	}
 // 
@@ -43,7 +43,7 @@
 // 		},
 // 
 // 		// Initialization code
-// 		initialize: function(options) {
+// 		initialize = function (options) {
 // 			this.so = self.options.so;
 // 			this.success = self.options.success;
 // 			this.version = self.options.version;
@@ -60,7 +60,7 @@
 // 		},
 // 
 // 		//SWFObject 2.2 (due to need for callback function)
-// 		generateFlash: function() {
+// 		generateFlash = function () {
 // 			this.flashVars = {callback:self.options.callBack + ".flashSuccess"};
 // 			this.flashParams = {quality:"low",allowScriptAccess:"all"};
 // 
@@ -80,7 +80,7 @@
 // 		 * or else it will be ignored by the screen reader and not
 // 		 * get an update on isActive.
 // 		 */
-// 		flashGenerateSuccess: function() {
+// 		flashGenerateSuccess = function () {
 // 			document.getElementById(self.options.divID).focus();
 // 			if (self.options.debug) {
 // 				// Need to figure out what we want to do if debug is
@@ -88,7 +88,7 @@
 // 			}
 // 		},
 // 
-// 		typeOf: function(value) {
+// 		typeOf = function (value) {
 // 			var s = typeof value;
 // 			if (s === 'object') {
 // 				if (value) {
@@ -104,7 +104,7 @@
 // 			return s;
 // 		},
 // 
-// 		getCookie: function() {
+// 		getCookie = function () {
 // 			var cookies = document.cookie.split(';'),
 // 			i = 0,
 // 			cookieData,
@@ -124,7 +124,7 @@
 // 		 *
 // 		 * return true/false if cookie exists
 // 		 */
-// 		cookieExists: function() {
+// 		cookieExists = function () {
 // 			var cookieInformation = this.getCookie(),
 // 			existsFlag = false;
 // 			if (self.options.debug === "true") {
@@ -135,7 +135,7 @@
 // 			return existsFlag;
 // 		},
 // 
-// 		setCookie: function() {
+// 		setCookie = function () {
 // 			var nextMonth = expiresDate = new Date();
 // 			nextMonth.setSeconds(0);
 // 			nextMonth.setMinutes(0);
@@ -148,12 +148,12 @@
 // 					expiresDate.toGMTString() + "; path=/";
 // 		},
 // 
-// 		getCookieValue: function() {
+// 		getCookieValue = function () {
 // 			var cookieInformation = this.getCookie();
 // 			return cookieInformation[1];
 // 		},
 // 
-// 		flashSuccess: function(accessibilityFlag) {
+// 		flashSuccess = function (accessibilityFlag) {
 // 			self.options.techAssist = (self.options.debug && self.options.debugFlag === "on") ? true
 // 					: ((self.options.debug && self.options.debugFlag === "off") ? false
 // 							: accessibilityFlag);
@@ -169,7 +169,7 @@
 // 		 * Display the version message in the assistiveTech div only
 // 		 * if we've been asked to do so.
 // 		 */
-// 		flashFailure: function() {
+// 		flashFailure = function () {
 // 			if (self.options.debug === "true") {
 // 				this.version = swfobject.getFlashPlayerVersion();
 // 				if (this.version && (document.getElementById && (this.version.major > 0))) {
@@ -209,6 +209,11 @@ var assistiveTech = (function () {
 		return cookieName;
 	},
 	
+	getCookieValue = function () {
+		var cookieInformation = self.getCookie();
+		return cookieInformation[1];
+	},
+
 	setCallback = function (cB) {
 		self.callBack = cB;
 	},
@@ -217,7 +222,11 @@ var assistiveTech = (function () {
 		self.writeAnalytics = anonymousFunction;
 	},
 	
-	init = function(options) {
+	setDebug = function (value) {
+		self.debug = value;
+	},
+
+	init = function (options) {
 		if (self.typeOf(options) === 'object') {
 			for (var key in (options || {})) {
 				self.options[key] = options[key];
@@ -235,8 +244,7 @@ var assistiveTech = (function () {
 	},
 	
 // Private Methods
-//SWFObject 2.2 (due to need for callback function)
-	loadSwfObject = function() {
+	loadSwfObject = function () {
 		var that = this,
 			body = document.getElementsByTagName("body")[0],
 			script = document.createElement("script");
@@ -255,7 +263,7 @@ var assistiveTech = (function () {
 		body.appendChild(script);
 	},
 	
-	generateFlash = function() {
+	generateFlash = function () {
 		var that = this;
 		that.flashVars = {callback:self.options.callBack + ".flashSuccess"};
 		that.flashParams = {quality:"low",allowScriptAccess:"all"};
@@ -264,7 +272,7 @@ var assistiveTech = (function () {
 		swfobject.embedSWF(self.options.flashLocale, self.options.divID, 1, 1, self.options.flashVersion, false, that.flashVars, that.flashParams, false, self.checkFlashInclusion());
 	},
 	
-	checkFlashInclusion = function() {
+	checkFlashInclusion = function () {
 		if (document.getElementById(self.options.divID).type.indexOf("application/x-shockwave-flash") !== -1) {
 			document.getElementById(self.options.divID).focus();
 		}
@@ -278,7 +286,7 @@ var assistiveTech = (function () {
 	 * Display the version message in the assistiveTech div only
 	 * if we've been asked to do so.
 	 */
-	flashFailure = function() {
+	flashFailure = function () {
 		var that = this,
 			flashVersion = swfobject.getFlashPlayerVersion();
 		if (self.options.debug === "true") {
@@ -292,7 +300,7 @@ var assistiveTech = (function () {
 		}
 	},
 	
-	typeOf = function(value) {
+	typeOf = function (value) {
 		var s = 'null';
 		if (value) {
 			if (typeof value === 'object' && typeof value.length === 'number' &&
@@ -304,15 +312,58 @@ var assistiveTech = (function () {
 		return s;
 	},
 	
-	setDebug = function(value) {
-		self.debug = value;
+	getCookie = function () {
+		var cookies = document.cookie.split(';'),
+			i = 0,
+			cookieData,
+			cookieName;
+		for ( ; i < cookies.length; i = i + 1) {
+			cookieData = cookieName = null;
+			cookieData = cookies[i].split('=');
+			cookieName = cookieData[0].replace(/^\s+|\s+$/g, '');
+			if (cookieName === self.options.cookieName) {
+				return cookieData;
+			}
+		}
+		return false;
+	},
+
+	/**
+	 *
+	 * return true/false if cookie exists
+	 */
+	cookieExists = function () {
+		var cookieInformation = self.getCookie(),
+			existsFlag = false;
+		if (self.options.debug === "true") {
+			existsFlag = false;
+		} else if (cookieInformation && cookieInformation.length > 1) {
+			existsFlag = true;
+		}
+		return existsFlag;
+	},
+
+	setCookie = function () {
+		var nextMonth = expiresDate = new Date();
+		nextMonth.setSeconds(0);
+		nextMonth.setMinutes(0);
+		nextMonth.setHours(0);
+		nextMonth.setMonth(nextMonth.getMonth() + 1);
+		nextMonth.setDate(1);
+		expiresDate = new Date(nextMonth);
+		document.cookie = self.options.cookieName + "=" +
+				escape(self.options.techAssist) + "; expires=" +
+				expiresDate.toGMTString() + "; path=/";
 	};
-	
+
 	return {
 		init: init,
-		getVersion: getVersion,
 		getCookieName: getCookieName,
-		setCallBack: setCallBack;
+		getCookieValue: getCookieValue,
+		getVersion: getVersion,
+		setCallBack: setCallBack,
+		setWriteAnalytics: setWriteAnalytics,
+		setDebug: setDebug;
 	}
 	
-})();
+}());
