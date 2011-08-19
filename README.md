@@ -2,9 +2,6 @@
 
 ## More information:
 http://walterg2.com
- 
-## License:
-http://www.opensource.org/licenses/mit-license.php
 
 ## Examples:
 ```javascript
@@ -24,3 +21,6 @@ assistiveTech.init({
  
 });
 ```
+
+## License:
+MIT Version 2 (see LICENSE.txt)
