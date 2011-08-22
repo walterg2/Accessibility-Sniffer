@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+	<title>Assistive Technology Example</title>
+</head>
+<body>
+	<article>
+		<h1>Assistive Technology</h1>
+		<p>Does your client have Assistive technologies turned on? <span id="writeAnalyticsResult"></span></p>
+		<span id="assistiveTech"></span>
+	</article>
+	<script src="./js/assistiveTech.js"></script>
+	<script>
+assistiveTech.init({
+	    cookieName: "assistiveTech",
+	    debug: false,
+	    divId: "assistiveTech",
+	    flashVersion: "9",
+	    flashLocale: "./media/assistiveTech.swf",
+	    callBack: function (enabledFlag) {
+	        document.getElementById("writeAnalyticsResult").innerHTML = enabledFlag;
+			alert("Some Analytic data goes here with the Assistive Tech to flag set to: " + enabledFlag);
+	    }
+	});
+
+	</script>
+</body>
+</html>
