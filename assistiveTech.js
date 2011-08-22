@@ -38,12 +38,12 @@ var assistiveTech = (function () {
 			var cookies = document.cookie.split(';'),
 				i = 0,
 				cookieData,
-				cookieName;
+				myCookieName;
 			for (i; i < cookies.length; i = i + 1) {
-				cookieData = cookieName = null;
+				cookieData = myCookieName = null;
 				cookieData = cookies[i].split('=');
-				cookieName = cookieData[0].replace(/^\s+|\s+$/g, '');
-				if (cookieName === defaults.cookieName) {
+				myCookieName = cookieData[0].replace(/^\s+|\s+$/g, '');
+				if (myCookieName === cookieName) {
 					return cookieData;
 				}
 			}
@@ -133,11 +133,11 @@ var assistiveTech = (function () {
 
 //Public Methods
 		getVersion = function () {
-			return this.appVersion;
+			return appVersion;
 		},
 
 		getCookieName = function () {
-			return this.cookieName;
+			return cookieName;
 		},
 
 		getCookieValue = function () {
