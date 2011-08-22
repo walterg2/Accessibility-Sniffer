@@ -58,7 +58,7 @@ var assistiveTech = (function () {
 			nextMonth.setMonth(nextMonth.getMonth() + 1);
 			nextMonth.setDate(1);
 			expiresDate = new Date(nextMonth);
-			document.cookie = defaults.cookieName + "=" +
+			document.cookie = cookieName + "=" +
 				escape(defaults.techAssist) + "; expires=" +
 				expiresDate.toGMTString() + "; path=/";
 		},
@@ -66,13 +66,17 @@ var assistiveTech = (function () {
 		translateBoolean = function (bool) {
 			return (bool === true) ? 'Yes' : 'No';
 		},
+		
+		executeCallback = function (flag) {
+			if (typeof defaults.callBack === "function") {
+				defaults.callBack(translateBoolean(flag));
+			}
+		},
 
 		flashSuccess = function (accessibilityFlag) {
 			defaults.techAssist = (defaults.debug === true) ? true : accessibilityFlag;
 			setCookie();
-			if (typeof defaults.callBack === "function") {
-				defaults.callBack(translateBoolean(defaults.techAssist));
-			}
+			executeCallback(defaults.techAssist);
 		},
 	
 		/**
@@ -180,7 +184,7 @@ var assistiveTech = (function () {
 			} else if (defaults.debug === true) {
 				loadSwfObject();
 			} else {
-				defaults.callBack(translateBoolean(getCookieValue()));
+				executeCallback(getCookieValue());
 			}
 		};
 
