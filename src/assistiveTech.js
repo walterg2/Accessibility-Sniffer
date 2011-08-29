@@ -12,7 +12,7 @@
  *		flashLocale: "flash/assistiveTech.swf",
  *		cookieName: "assistiveTech",
  *		debug: "false",
- *		divId: "assistiveTech",
+ *		elemId: "assistiveTech",
  *		flashVersion: "9",
  *		flashLocale: "/media/assistiveTech.swf",
  *		success: function () { //some function here },
@@ -26,7 +26,7 @@ var assistiveTech = (function () {
 		cookieName = "assistiveTech",
 		defaults = {
 			debug: false,
-			divId: "assistiveTech",
+			elemId: "assistiveTech",
 			flashLocale: "/flash/assistiveTech.swf",
 			flashVersion: "9",
 			techAssist: false,
@@ -99,7 +99,7 @@ var assistiveTech = (function () {
 		},
 
 		checkFlashInclusion = function (flag) {
-			var flashDiv = document.getElementById(defaults.divId);
+			var flashDiv = document.getElementById(defaults.elemId);
 			if (flashDiv.type.indexOf("application/x-shockwave-flash") !== -1) {
 				flashDiv.focus();
 			} else {
@@ -112,7 +112,7 @@ var assistiveTech = (function () {
 				flashParams = {quality: "low", allowScriptAccess: "all"};
 
 			// Write out the SWFObject
-			swfobject.embedSWF(defaults.flashLocale, defaults.divId, 1, 1, defaults.flashVersion, false, flashVars, flashParams, false, checkFlashInclusion);
+			swfobject.embedSWF(defaults.flashLocale, defaults.elemId, 1, 1, defaults.flashVersion, false, flashVars, flashParams, false, checkFlashInclusion);
 		},
 
 		loadSwfObject = function () {
